@@ -7,8 +7,11 @@ const server = http.createServer((req, res) => {
 
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     const queryObject = url.parse(req.url, true).query;
-    const username = process.env.user;
-    const password = process.env.pass;
+    /*const username = process.env.user;
+    const password = process.env.pass;*/
+
+    username='factorization'
+    password='_skTZbH[xy@7VOv2'
 
     const connection = mysql.createConnection({
         host: '192.168.0.3',
@@ -78,8 +81,36 @@ const server = http.createServer((req, res) => {
         });
 
     } else {
-        res.statusCode = 401;
-        res.end('Unauthrized');
+        connection.connect((err) => {
+            if (err) {
+                console.error('error connecting: ' + err.message);
+                res.end('エラー,' + err.message);
+                return;
+            }
+
+            const sql = "SELECT * FROM `score` ORDER BY score ASC";
+
+            connection.query(sql, (err, results, fields) => {
+                if (err) {
+                    console.error('error querying: ' + err.stack);
+                    res.write('エラー,' + err.message);
+                    return;
+                }
+
+                results.forEach((user,index) => {
+                    res.write(`
+                        <tr>
+                            <td class="user-rank">${index + 1}</td>
+                            <td class="user-name">${user.name}</td>
+                            <td class="user-score">${user.score}</td>
+                        </tr>
+                    `)
+                });
+
+                connection.end();
+                res.end();
+            });
+        });
     }
 });
 
