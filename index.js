@@ -7,11 +7,8 @@ const server = http.createServer((req, res) => {
 
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     const queryObject = url.parse(req.url, true).query;
-    /*const username = process.env.user;
-    const password = process.env.pass;*/
-
-    username='factorization'
-    password='_skTZbH[xy@7VOv2'
+    const username = process.env.user;
+    const password = process.env.pass;
 
     const connection = mysql.createConnection({
         host: '192.168.0.3',
@@ -88,7 +85,7 @@ const server = http.createServer((req, res) => {
                 return;
             }
 
-            const sql = "SELECT * FROM `score` ORDER BY score ASC";
+            const sql = "SELECT * FROM `score` ORDER BY score DESC";
 
             connection.query(sql, (err, results, fields) => {
                 if (err) {
