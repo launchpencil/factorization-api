@@ -41,7 +41,7 @@ const server = http.createServer((req, res) => {
                 }
 
                 if (results.length) {
-                    console.log(results[0].score)
+                    res.write(results[0].score)
                 }
 
                 connection.end();
