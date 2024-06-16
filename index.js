@@ -27,7 +27,7 @@ const server = http.createServer((req, res) => {
                 return;
             }
 
-            const sql = "SELECT * FROM `score` WHERE `name` = ?";
+            const sql = "SELECT * FROM `rankings` WHERE `name` = ?";
             const params = [player];
 
             connection.query(sql, params, (err, results, fields) => {
@@ -58,7 +58,7 @@ const server = http.createServer((req, res) => {
             }
 
             const sql = `
-            INSERT INTO score (name, score) VALUES (?, ?)
+            INSERT INTO rankings (name, score) VALUES (?, ?)
             ON DUPLICATE KEY UPDATE
                 name = VALUES(name),
                 score = VALUES(score)`;
@@ -85,7 +85,7 @@ const server = http.createServer((req, res) => {
                 return;
             }
 
-            const sql = "SELECT * FROM `score` ORDER BY score DESC";
+            const sql = "SELECT * FROM `rankings` ORDER BY score DESC";
 
             connection.query(sql, (err, results, fields) => {
                 if (err) {
